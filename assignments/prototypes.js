@@ -34,7 +34,7 @@ function CharacterStats(characterAttribute) {
   GameObject.call(this, characterAttribute);
   this.healthPoints = characterAttribute.healthPoints;
   CharacterStats.prototype.takeDamage = function () {
-    return `${this.name} took damage.`;
+    return `${this.name} took damage`;
   }
 }
 
@@ -119,19 +119,71 @@ CharacterStats.prototype = Object.create(GameObject.prototype);
     language: 'Elvish',
   });
 
-  console.log(mage.createdAt); // Today's date
-  console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
-  console.log(swordsman.healthPoints); // 15
-  console.log(mage.name); // Bruce
-  console.log(swordsman.team); // The Round Table
-  console.log(mage.weapons); // Staff of Shamalama
-  console.log(archer.language); // Elvish
-  console.log(archer.greet()); // Lilith offers a greeting in Elvish.
-  console.log(mage.takeDamage()); // Bruce took damage.
-  console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
+  // console.log(mage.createdAt); // Today's date
+  // console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
+  // console.log(swordsman.healthPoints); // 15
+  // console.log(mage.name); // Bruce
+  // console.log(swordsman.team); // The Round Table
+  // console.log(mage.weapons); // Staff of Shamalama
+  // console.log(archer.language); // Elvish
+  // console.log(archer.greet()); // Lilith offers a greeting in Elvish.
+  // console.log(mage.takeDamage()); // Bruce took damage.
+  // console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+  function Hero(heroAttr) {
+    Humanoid.call(this, heroAttr);
+    Hero.prototype.attack = function (enemyName) {
+      enemyName.healthPoints = enemyName.healthPoints - 3;
+      if (enemyName.healthPoints > 0) {
+        return `${enemyName.takeDamage()} from your ${this.weapons}! They have ${enemyName.healthPoints} health remaining.`
+      }
+      else {
+        return `${enemyName.destroy()} You won the battle!`
+      }
+    };
+  }
+  Hero.prototype = Object.create(Humanoid.prototype);
+
+  function Villain(villainAttr) {
+    Humanoid.call(this, villainAttr);
+    Villain.prototype.magic = function (enemyName) {
+      enemyName.healthPoints = enemyName.healthPoints - 3;
+      if (enemyName.healthPoints > 0) {
+        return `${enemyName.takeDamage()} from your ${this.weapons}! They have ${enemyName.healthPoints} health remaining.`
+      }
+      else {
+        return `${enemyName.destroy()} You won the battle!`
+      }
+    }
+  }
+  Villain.prototype = Object.create(Humanoid.prototype);
+
+const theFonz = new Hero({
+  healthPoints: 10,
+  name: 'Arthur Herbert Fonzarelli',
+  team: 'Fonzi',
+  weapons: [
+    'Finger Guns'
+  ],
+  language: 'Aaaaayyyy',
+});
+
+const badSanta = new Villain({
+  healthPoints: 4,
+  name: 'Chris Kringle',
+  team: 'Winter is coming!',
+  weapons: [
+    'Reindeer Rampage'
+  ],
+  language: 'North Polish',
+})
+
+console.log(badSanta.magic(theFonz));
+console.log(theFonz.attack(badSanta));
+console.log(badSanta.magic(theFonz));
+console.log(theFonz.attack(badSanta));
